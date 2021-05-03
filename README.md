@@ -12,8 +12,7 @@ Subset of the COCO train2017 dataset focussed around traffic.
 
 04 - Transform dataset into YOLO format
 
-![Train](train.png)
-![val](val.png)
+![Train and val](Dataset.png)
 
 
 ---
