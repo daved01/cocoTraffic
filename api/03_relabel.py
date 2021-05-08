@@ -19,7 +19,6 @@ def read_annotations(ann_filename):
     return anns
 
 
-
 def read_relabelled_annotations(ann_filename, anns):
     """
     Gets annotation ids and annotations for the relabelled classes 92, 93, and 94.
@@ -57,7 +56,6 @@ def read_relabelled_annotations(ann_filename, anns):
     return ann_ids_relabelled, anns_traffic_relabelled
 
   
-
 def merge_annotations(anns, anns_relabelled, anns_ids_relabelled):
     """
     Merges relabelled annotations into annotations.

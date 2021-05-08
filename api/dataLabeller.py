@@ -102,11 +102,11 @@ def save_dataset(original_filepath, target_filepath, anns, cats):
 
 if __name__ == "__main__":
     cat_show = [10, 92, 93, 94]  # Categories ids that you want shown and relabelled
-    cat_show = [10]  # Categories ids that you want shown and relabelled
+    #cat_show = [10]  # Categories ids that you want shown and relabelled
 
     # COCO dataset path
     dataDir = ".."
-    dataType = "trainTraffic"
+    dataType = "valTrafficLights"
 
     # Annotations file  
     annDir = "annotations"

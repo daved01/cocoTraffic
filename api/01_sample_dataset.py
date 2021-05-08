@@ -86,13 +86,6 @@ def sample_train2017():
         assert(len(imgIds_traffic) == num_samples_should)
         print('Sampled {} images containing object {}.'.format(num_samples, cl))
 
-        # Load annotations for the sampled images
-        #annIds_sampled = coco.getAnnIds(imgIds_sampled)
-        #anns_sampled = coco.loadAnns(annIds_sampled) # List of dictionaries for each annotation
-        #for ann in anns_sampled:
-        #    anns_traffic.append(ann)
-        #print('Number of object instances in the {} images: {}'.format(num_samples, len(annIds_sampled)))
-
     assert(len(imgIds_traffic) == 12000) # Should be 12000 images
 
     # Get annotations
