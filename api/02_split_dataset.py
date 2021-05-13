@@ -1,3 +1,9 @@
+# ========================================================================= #
+# Splits the previously sampled dataset into a train and val set.           #
+# Input: Annotation file in COCO format                                     #
+#                                                                           #
+# ========================================================================= #
+
 import numpy as np
 import skimage.io as io
 import matplotlib.pyplot as plt
@@ -8,7 +14,6 @@ import csv
 from shutil import copyfile
 
 from pycocotools.coco import COCO
-
 
 
 def get_diff(l1, l2):
@@ -130,5 +135,4 @@ if __name__=="__main__":
 
     copy_image_files(img_ids_train, "trainTraffic")
     copy_image_files(img_ids_val, "valTraffic")
-
     

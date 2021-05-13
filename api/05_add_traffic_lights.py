@@ -1,3 +1,9 @@
+# ========================================================================= #
+# Adds remaining traffic light images from COCO to another dataset.         #
+# Inputs: Annotation files in the COCO format for both datasets             #
+#                                                                           #
+# ========================================================================= #
+
 import random
 import json
 import csv

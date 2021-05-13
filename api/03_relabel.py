@@ -5,8 +5,8 @@
 # ========================================================================= #
 
 import json
-from pycocotools.coco import COCO
 
+from pycocotools.coco import COCO
 
 #%%
 def read_annotations(ann_filename):
@@ -15,7 +15,7 @@ def read_annotations(ann_filename):
     f = open(ann_file)
     anns = json.load(f)
     print("Loaded {} annotations from file {}.".format(len(anns['annotations']), ann_filename))
-
+    
     return anns
 
 
@@ -29,7 +29,7 @@ def read_relabelled_annotations(ann_filename, anns):
     """
     
     # Load dataset traffic
-    ann_file = "../annotations/relabelled/" + ann_filename + ".json"
+    ann_file = "../annotations/" + ann_filename + ".json"
     coco=COCO(ann_file)
     
     # Filter for relabelled traffic lights only
@@ -99,7 +99,7 @@ def save_annotations(anns, filename):
     anns_out['annotations'] = anns
 
     # Get updated categories
-    ann_file = "../annotations/relabelled/instances_valTrafficRelabelled.json"
+    ann_file = "../annotations/more_lights/instances_valTrafficLightsRelabelled.json"
     f2 = open(ann_file)
     anns_out_cats = json.load(f2)
     anns_out['categories'] = anns_out_cats['categories']
@@ -140,6 +140,7 @@ def check_annotations(anns, ann_file):
 
 #%% Run
 if __name__ == "__main__":
+    """
     anns_train = read_annotations("instances_trainTraffic")
     anns_val = read_annotations("instances_valTraffic")
 
@@ -167,3 +168,23 @@ if __name__ == "__main__":
     # Check structure of produced datasets
     check_annotations(anns_train, "trainTraffic")
     check_annotations(anns_val, "valTraffic")
+    """
+    anns_train = read_annotations("instances_trainTrafficRelabelled")
+    anns_val = read_annotations("instances_valTrafficRelabelled")
+    
+    ann_ids_relabelled_train, anns_traffic_relabelled_train = read_relabelled_annotations(
+        "more_lights/instances_trainTrafficLightsRelabelled", anns_train)
+    ann_ids_relabelled_val, anns_traffic_relabelled_val = read_relabelled_annotations(
+        "more_lights/instances_valTrafficLightsRelabelled", anns_val)
+    ann_ids_relabelled = ann_ids_relabelled_train + ann_ids_relabelled_val
+    anns_traffic_relabelled = anns_traffic_relabelled_train + anns_traffic_relabelled_val
+    
+    anns_train = merge_annotations(anns_train, anns_traffic_relabelled, ann_ids_relabelled)
+    anns_val = merge_annotations(anns_val, anns_traffic_relabelled, ann_ids_relabelled)
+
+    save_annotations(anns_train, "trainTrafficRelabelled")
+    save_annotations(anns_val, "valTrafficRelabelled")
+
+    # Check structure of produced datasets
+    check_annotations(anns_train, "trainTrafficLightsRelabelled")
+    check_annotations(anns_val, "valTrafficLightsRelabelled")

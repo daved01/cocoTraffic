@@ -1,11 +1,14 @@
+# ========================================================================= #
+# Merges annotation files before and after relabelling.                     #
+# Inputs: Two annotation files in COCO format, one with new labels,         #
+#         another with original COCO labels                                 #
+# ========================================================================= #
 
 import json
 import os
 
 from pycocotools.coco import COCO
 
-# Merge labelled traffic lights
-# Make yolo dataset
 
 def load_anns(filename):
     # Loads annotations
@@ -19,6 +22,19 @@ def load_anns(filename):
     return anns, img_ids
 
 
+def load_anns_imgs(filename):
+    # Loads annotations
+    path = "../annotations/" + filename + ".json"
+    coco=COCO(path)
+    cat_ids = coco.getCatIds()
+    img_ids = coco.getImgIds()
+    imgs = coco.loadImgs(img_ids)
+    ann_ids = coco.getAnnIds(img_ids)
+    anns = coco.loadAnns(ann_ids)
+
+    return anns, imgs
+
+
 def merge_anns(anns, anns_traffic_lights):
     """
     Args:
@@ -27,7 +43,7 @@ def merge_anns(anns, anns_traffic_lights):
 
     Returns:
     anns_merged         -- List of json annotations
-    imgs_merged         -- 
+    imgs_merged         -- List of image ids
     """
 
     # Extract annotation_ids and image_ids
@@ -73,7 +89,7 @@ def save_dataset(anns, imgs, filename):
     """
     
     # Load dataset val to get structure
-    ann_file = "../annotations/instances_valTrafficRelabelled.json"
+    ann_file = "../annotations/before_more_lights/instances_valTrafficRelabelled.json"
     target_file = json.load(open(ann_file, 'r'))
 
     # Make final dictionary
@@ -109,7 +125,22 @@ def check_images():
     img_ids.sort()
     print(filenames[0:10])
     print(img_ids[0:10])
-    
+
+
+def append_new_annotations(file_name_1, file_name_2, output_name):
+    """
+    Reads the annotations and the new annotations and merges them.
+    """
+    # Load both annotation files
+    anns_1, imgs_1 = load_anns_imgs(file_name_1)
+    anns_2, imgs_2 = load_anns_imgs(file_name_2)
+    print(len(imgs_1))
+    print(len(imgs_2))
+    # Merge annotations
+    anns_out, _ = merge_anns(anns_1, anns_2)
+    imgs_out = imgs_1 + imgs_2
+    save_dataset(anns_out, imgs_out, output_name)
+ 
 
 if __name__ == "__main__":
     # Load annotations
@@ -130,5 +161,7 @@ if __name__ == "__main__":
     save_dataset(anns_train_merged, imgs_train, "trainTrafficExtended")
     save_dataset(anns_val_merged, imgs_val, "valTrafficExtended")
     """
+    append_new_annotations("before_more_lights/instances_trainTrafficRelabelled", "more_lights/instances_trainTrafficLightsRelabelled", "instances_trainTrafficLights-relabelled")
+    append_new_annotations("before_more_lights/instances_valTrafficRelabelled", "more_lights/instances_valTrafficLightsRelabelled", "instances_valTrafficLights-relabelled")
 
-    check_images()
+    #check_images()

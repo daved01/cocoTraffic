@@ -1,3 +1,9 @@
+# ========================================================================= #
+# Samples COCO train2017 for selected classes.                              #
+#                                                                           #
+#                                                                           #
+# ========================================================================= #
+
 import numpy as np
 import skimage.io as io
 import matplotlib.pyplot as plt

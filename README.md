@@ -1,6 +1,43 @@
 # Custom COCO dataset
 
-Subset of the COCO train2017 dataset focussed around traffic.
+Subset of the COCO `train2017` dataset focussed around traffic. In addition to the annotations from COCO we have refined the class `traffic light` (10) into the three classes `traffic_light_red` (92), `traffic_light_green` (93) and `traffic_light_na` (94). We provide these annotations in both the COCO format as well as prepared for using it with [`yolov5`](https://github.com/ultralytics/yolov5).
+
+## Classes
+There is a total of 11392 images in the training set which contain 82350 annotations, and 2848 (20510 annotations) in the validation set. The figure shows the distribution.
+
+![Train and val](Dataset.png)
+
+Here are the exact numbers.
+
+| Class COCO     | Class yolo | Name              | Images train | Imags val  | Anns train | Anns val  | 
+|:-------------   | :------: | :-----------------: | :----------: | :--------: | :--------: | --------: | 
+|  1             |  0       |  person             | 6598        | 1685         |   34800    | 8559      |
+|  2             |  1       |  bicycle            | 1485        |358           |  3430      | 849       |
+|  3             |  2       |  car                | 4545        |  1109        |  18711     |  4479     |
+|  4             |  3       |  motorcycle         |   1342      |  343         |    3492    | 898       |
+|  6             |  4       |  bus                |    1691     |  422         |   2621     | 662       |
+|  7             |  5       |  train              |  1203       |   281        |  1511      | 360       |
+|  8             |  6       |  truck              |  2310       |  539         |  3707      |  903      |
+|  11            |  7       |  fire hydrant       | 1081        |   280        |    1190    |  295      |
+|  13            |  8       |  stop sign          |  1068       |    246       |  1216      | 283       |
+|  17            |  9       |  cat                |  846        |   266        | 995        | 306       |
+|  18            |  10      |  dog                | 1015        |    266       | 1268       | 331       |
+|  92            |  11      |  traffic_light_red  | 1391        |     334      | 2511       | 620       | 
+|  93            |  12      |  traffic_light_green|  856        |    202       |  1416      |  378      |
+|  94            |  13      |  traffic_light_na   |  2390       |   637        | 5482       | 1587      |
+
+From the original COCO traffic lights, we discarded 772 and 118 for train and validation respectively due to mislabelled or otherwise corrupt labels.
+
+## How to use
+1. Download the images `train2017` from the COCO [website]().
+
+2. Under images, create two folders `trainTraffic` and `valTraffic`.
+
+3. Run the script `copy_images`. This copies train and val images from `train2017` into the folders from 02. Afterwards you can delete `train2017`.
+
+4. Download the annotations `instances_trainTraffic.json` and `instances_valTraffic` [here]() and put them into the annotations folder.
+
+If you want to train a `yolov5` model, you can download the annotaions in the yolo format [here]().
 
 
 ## Files
@@ -12,24 +49,6 @@ Subset of the COCO train2017 dataset focussed around traffic.
 
 04 - Transform dataset into YOLO format
 
-![Train and val](Dataset.png)
+05 - Add remaing traffic light images from COCO
 
-
----
-## Original COCO
-
-COCO API - http://cocodataset.org/
-
-COCO is a large image dataset designed for object detection, segmentation, person keypoints detection, stuff segmentation, and caption generation. This package provides Matlab, Python, and Lua APIs that assists in loading, parsing, and visualizing the annotations in COCO. Please visit http://cocodataset.org/ for more information on COCO, including for the data, paper, and tutorials. The exact format of the annotations is also described on the COCO website. The Matlab and Python APIs are complete, the Lua API provides only basic functionality.
-
-In addition to this API, please download both the COCO images and annotations in order to run the demos and use the API. Both are available on the project website.
--Please download, unzip, and place the images in: coco/images/
--Please download and place the annotations in: coco/annotations/
-For substantially more details on the API please see http://cocodataset.org/#download.
-
-After downloading the images and annotations, run the Matlab, Python, or Lua demos for example usage.
-
-To install:
--For Matlab, add coco/MatlabApi to the Matlab path (OSX/Linux binaries provided)
--For Python, run "make" under coco/PythonAPI
--For Lua, run “luarocks make LuaAPI/rocks/coco-scm-1.rockspec” under coco/
+06 - Merge 05 into rest
