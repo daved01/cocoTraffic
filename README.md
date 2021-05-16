@@ -37,7 +37,7 @@ From the original COCO traffic lights, we discarded 772 and 118 for train and va
 
 4. Download the annotations `instances_trainTraffic.json` and `instances_valTraffic` [here](https://drive.google.com/file/d/19vgtKF-EsGhMSFq7ZizM_68UOqVc51UE/view?usp=sharing) and put them into the annotations folder.
 
-If you want to train a `yolov5` model, you can download the annotaions in the yolo format [here](https://drive.google.com/file/d/1ev2HgNixmHsR2r9n-g50VVW3HAYccUA9/view?usp=sharing).
+If you want to train a `yolov5` model, you can download the annotations in the yolo format [here](https://drive.google.com/file/d/1ev2HgNixmHsR2r9n-g50VVW3HAYccUA9/view?usp=sharing).
 
 
 ## Files
