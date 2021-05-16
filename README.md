@@ -52,3 +52,7 @@ If you want to train a `yolov5` model, you can download the annotations in the y
 05 - Add remaing traffic light images from COCO
 
 06 - Merge 05 into rest
+
+
+## Extend the COCO dataset
+To extend the COCO dataset we use a DETR model to annotate new images in the COCO format. Then we can use our label tool to refine the traffic light labels and fix errors. You can find these tools in the folder `pre-labeller`.
