@@ -1,12 +1,11 @@
-"""
-Program to annotate images.
+# Program to annotate images.
+# Input:
+# File with paths to each image which should be annotated
+#
+# Output:
+# Annotation file in the COCO format
+# Box format: (x, y, w, h), where x,y is the top left corner.
 
-Input:
-File with paths to each image which should be annotated
-
-Output:
-Annotation file in the COCO format
-"""
 import numpy as np
 import torch
 import torchvision.transforms as T
@@ -27,20 +26,21 @@ def read_list_to_annotate(filename):
     return img_paths
 
 
-def box_cxcywh_to_xyxy(x):
-    # Converts bounding boxes to (x1, y1, x2, y2) coordinates of top left and bottom right corners
+def box_cxcywh_to_xywh(x):
+    # Converts bounding boxes to (x1, y1, w, h) coordinates of top left corner and width and height.
 
     # (center_x, center_y, h, w)
     x_c, y_c, w, h = x.unbind(1)
     b = [(x_c - 0.5 * w), (y_c - 0.5 * h),
-        (x_c + 0.5 * w), (y_c + 0.5 * h)]
+        w, h]
     return torch.stack(b, dim=1)
 
 
 def rescale_bboxes(out_bbox, size):
     # Scale the bounding boxes to the image size
     img_w, img_h = size
-    b = box_cxcywh_to_xyxy(out_bbox)
+    b = box_cxcywh_to_xywh(out_bbox)
+    #b = out_bbox
     b = b * torch.tensor([img_w, img_h, img_w, img_h], dtype=torch.float32)
     return b
 
@@ -62,7 +62,7 @@ def auto_annotate(img_paths):
     return annotations
 
 
-def predict(model, img_path, thresh= 0.8):
+def predict(model, img_path, thresh= 0.6):
     """
     Predicts for a given image path
     """

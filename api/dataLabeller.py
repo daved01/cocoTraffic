@@ -6,7 +6,6 @@ import pylab
 import json
 import cv2 as cv
 
-
 # Import annotations (check)
 # Create loop to loop through images (check)
 # Show image (check)
@@ -106,7 +105,7 @@ if __name__ == "__main__":
 
     # COCO dataset path
     dataDir = ".."
-    dataType = "valTrafficLights"
+    dataType = "Traffic"
 
     # Annotations file  
     annDir = "annotations"
@@ -114,8 +113,8 @@ if __name__ == "__main__":
 
     # Save file
     saveFile = dataDir + '/' + annDir + '/instances_' + dataType + 'Relabelled'
-    tagFile = dataDir + '/' + annDir + '/instances_' + dataType + 'Tagged'
-    progressFile = dataDir + '/' + annDir + '/instances_' + dataType + 'LastSave'
+    tagFile = dataDir + '/' + annDir + "/labelTool/" + '/instances_' + dataType + 'Tagged'
+    progressFile = dataDir + '/' + annDir + "/labelTool/" + '/instances_' + dataType + 'LastSave'
 
     # Images folder
     imgDir = dataDir + '/images/' + dataType + '/'

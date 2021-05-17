@@ -28,7 +28,8 @@ Here are the exact numbers.
 
 From the original COCO traffic lights, we discarded 772 and 118 for train and validation respectively due to mislabelled or otherwise corrupt labels.
 
-## How to use
+
+## How to use the api
 1. Download the images `train2017` from the COCO [website]().
 
 2. Under images, create two folders `trainTraffic` and `valTraffic`.
@@ -52,6 +53,12 @@ If you want to train a `yolov5` model, you can download the annotations in the y
 05 - Add remaing traffic light images from COCO
 
 06 - Merge 05 into rest
+
+
+## Relabel the traffic light annotations
+To rename COCO formatted annotations you can use the tool `dataLabeller.py`. It goes through all traffic lights (COCO class 10) and allows you to change them.
+
+To integrate LISATrafficLight data, use the adapted tool `dataLabellerLISA.py`. It also allows you to delete annotations. It is meant to be used in combination with the COCO pre-label tool which produces false positives to assure a high recall.
 
 
 ## Extend the COCO dataset
