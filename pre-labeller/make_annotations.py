@@ -1,10 +1,15 @@
-# Program to annotate images.
-# Input:
-# File with paths to each image which should be annotated
-#
-# Output:
-# Annotation file in the COCO format
-# Box format: (x, y, w, h), where x,y is the top left corner.
+# =================================================================== #
+# Program to pre-annotate images using COCO-trained DETR.             #
+#                                                                     #
+# Input:                                                              #
+# File with paths to each image which should be annotated.            #
+#                                                                     #
+# Output:                                                             #
+# Annotation file in the COCO format                                  #
+# Box format: (x, y, w, h), where x,y is the top left corner.         #
+                                                                      #
+# Note that this does not work well when the image is crowed.         #
+# =================================================================== #
 
 import numpy as np
 import torch

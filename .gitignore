@@ -132,3 +132,9 @@ labels/
 annotations/
 .DS_Store
 .zip
+
+# Project specific
+makesense/delete/
+*.csv
+*.log
+pre-labeller/

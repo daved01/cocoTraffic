@@ -161,7 +161,7 @@ if __name__ == "__main__":
     save_dataset(anns_train_merged, imgs_train, "trainTrafficExtended")
     save_dataset(anns_val_merged, imgs_val, "valTrafficExtended")
     """
-    append_new_annotations("before_more_lights/instances_trainTrafficRelabelled", "more_lights/instances_trainTrafficLightsRelabelled", "instances_trainTrafficLights-relabelled")
-    append_new_annotations("before_more_lights/instances_valTrafficRelabelled", "more_lights/instances_valTrafficLightsRelabelled", "instances_valTrafficLights-relabelled")
+    append_new_annotations("before_LISA/instances_trainTraffic", "instances_trainTrafficLISA", "instances_trainTrafficLISA-relabelled")
+    #append_new_annotations("before_LISA/instances_valTraffic", "instances_valTrafficLISA", "instances_valTrafficLISA-relabelled")
 
     #check_images()

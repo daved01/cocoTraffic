@@ -130,9 +130,9 @@ if __name__=="__main__":
     img_ids_train, img_ids_val = split_dataset()
     anns_train, anns_val = get_annotations(img_ids_train, img_ids_val)
     
-    save_dataset(img_ids_train, anns_train, "trainTraffic")
-    save_dataset(img_ids_val, anns_val, "valTraffic")
+    #save_dataset(img_ids_train, anns_train, "trainTraffic")
+    #save_dataset(img_ids_val, anns_val, "valTraffic")
 
-    copy_image_files(img_ids_train, "trainTraffic")
-    copy_image_files(img_ids_val, "valTraffic")
+    #copy_image_files(img_ids_train, "trainTraffic")
+    #copy_image_files(img_ids_val, "valTraffic")
     

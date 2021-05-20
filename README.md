@@ -63,3 +63,9 @@ To integrate LISATrafficLight data, use the adapted tool `dataLabellerLISA.py`. 
 
 ## Extend the COCO dataset
 To extend the COCO dataset we use a DETR model to annotate new images in the COCO format. Then we can use our label tool to refine the traffic light labels and fix errors. You can find these tools in the folder `pre-labeller`.
+
+
+## LISA Dataset
+Train 11526 images and 84627 annotations.
+
+Val has 2883 images and 21038 annotations.
