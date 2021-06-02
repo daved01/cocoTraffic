@@ -1,6 +1,6 @@
 # COCO Dataset Extensions
 
-We refined the traffic light class (index 10) of the COCO dataset into the three classes traffic_ligt_red (92), traffic_light_green (93), traffic_light_na (94) and integrated these into three datasets, see below. We discovered mislabelled traffic lights in the original COCO 2017 training and validation data and kept their label as 10, so that these annotations can easily be identified.
+We refined the traffic light class (index 10) of the COCO dataset into the three classes, traffic_light_red (92), traffic_light_green (93), traffic_light_na (94), and integrated these into three datasets (see below). We discovered mislabelled traffic lights in the original COCO 2017 training and validation data and kept their label as 10, so that these annotations can easily be identified.
 
 To learn more about the dataset see our post [here]().
 
@@ -8,7 +8,7 @@ To learn more about the dataset see our post [here]().
 ## Setup
 The setup varies for each of the three datasets since they require different files. For each you can either follow the steps desribed below or use the `setup.py`.
 
-If you choose not to use the `setup.py`, create folders `annotations` and `images` at the root of this repository. Then, download the images `train2017` from the COCO [website]() and add them to the `images` folder. Then your repository should look like this:
+If you choose not to use the `setup.py`, create folders `annotations` and `images` at the root of this repository. Then, download the images `train2017` from the COCO [website](https://cocodataset.org/#download) and add them to the `images` folder. Then your repository should look like this:
 
 ```
 cocoTraffic/
@@ -35,8 +35,9 @@ With this base setup choose the dataset that you need and follow the instruction
 ## 1. COCO Refined
 -> Choice 1 in `setup.py`
 
-Full COCO 2017 dataset, with all traffic lights relabelled in training and validation dataset. 
-To start, download the images from the validation dataset `val2017` from the COCO [website](https://cocodataset.org/#download) and place them next to the `train2017` images. Then, get the annotation files with the refined labels [here](https://drive.google.com/file/d/1weZpzmva_fcTtiSIm9jdM73PdBoJgzOe/view?usp=sharing) and place them into the `annotations` folder. 
+Full COCO 2017 dataset with all traffic lights relabelled in training and validation dataset. 
+
+To start, download the images from the validation dataset `val2017` from the COCO [website](https://cocodataset.org/#download) and place them next to the `train2017` images. Then, get the annotation files with the refined labels [here](https://drive.google.com/file/d/1weZpzmva_fcTtiSIm9jdM73PdBoJgzOe/view?usp=sharing) and place the files into the `annotations` folder. 
 
 
 ## 2. COCO Traffic
@@ -57,7 +58,7 @@ Extended COCO Traffic with images of traffic lights from the [LISA Traffic Light
 
 
 # Tools
-To label the data we created and used the following tools.
+To label the data, we created and used the following tools.
 
 `dataLabeller` - Tool which iterates through COCO annotations and lets you change their category id. Used to relabel the traffic lights.
 
