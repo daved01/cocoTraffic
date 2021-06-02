@@ -1,37 +1,65 @@
-"""
-Generates the subsets for the COCO dataset. Includes:
-- Relabelled traffic lights
-- Additional label traffic lights
-"""
+# ========================================================================= #
+# Generates the subsets for the COCO dataset with refined traffic light     #
+# class. New traffic light classes are:                                     #
+# 92 traffic_light_red                                                      #
+# 93 traffic_light_green                                                    #
+# 94 traffic_light_na                                                       #
+# Mislabelled COCO data keep their class traffic light (10)                 #
+#                                                                           #
+# Inputs:                                                                   #
+# - COCO train2017                                                          #
+# - COCO val2017                                                            #
+# - LISA Traffic Light Dataset                                              #
+#                                                                           #
+# Outputs:                                                                  #
+# 0. Base annotations - Refined traffic lights from train2017, val2017      # 
+# 1. COCO Refined - train2017 and val2017, traffic lights refined           #
+# 2. COCO Traffic - subsampled train2017 and traffic lights form val2017    #
+# 3. COCO Traffic Extended - Like 2. with added images from the LISA        #
+#                            Traffic Light dataset                          #
+# ========================================================================= #
+
 import json
 import random
 from shutil import copyfile
 from collections import defaultdict
 
+
 def load_anns(path, filename): 
+    # Loads an annotation file
     f = open(path+filename)
     anns = json.load(f)
 
     return anns
 
 def save_dataset(dataset, filename):
+    # Saves an annotation file
     path = "../annotations/"
     with open(path+filename, 'w', encoding='utf-8') as f:
         json.dump(dataset, f, indent=0)
     print("Saved dataset to disk as {}!".format(filename))
 
 def get_diff(l1, l2):
-    """
-    Returns the difference between two lists.
-    """
+    # Returns the difference between two lists.
     diff = list( list(set(l1) - set(l2)) + list(set(l2) - set(l1)) )
-
     return diff
 
 def filter_classes(dataset):
-    class_names = ['traffic light', 'car', 'truck', 'bus', 'motorcycle', 'bicycle', 'person', 'dog', 'cat', 'stop sign', 'fire hydrant', 'train',
-                    'traffic_light_red', 'traffic_light_green', 'traffic_light_na']
-    class_names = ['traffic light', 'traffic_light_red', 'traffic_light_green', 'traffic_light_na']
+    """
+    Filters classes from the dataset based on class_names.
+    Inputs:
+    dataset - COCO annotation file object
+
+    Returns:
+    dataset - COCO annotation file objecct with specified classes only.
+    """
+    class_names = ['traffic light', 'car', 'truck', 'bus', 'motorcycle', 
+                    'bicycle', 'person', 'dog', 'cat', 'stop sign', 
+                    'fire hydrant', 'train', 'traffic_light_red', 
+                    'traffic_light_green', 'traffic_light_na']
+    class_names = ['traffic light', 'traffic_light_red', 
+                    'traffic_light_green', 'traffic_light_na']
+    
     # Get category ids
     keep = []
     for cat in dataset['categories']:
@@ -41,7 +69,6 @@ def filter_classes(dataset):
   
     # Map img_ids to image objects
     images_table = {x['id']:x for x in dataset['images']}
-
 
     # Map img_ids to annotation objects
     img_id_table = defaultdict(list)
@@ -60,7 +87,6 @@ def filter_classes(dataset):
         imgs_ids_out.append(int(img_id))
         anns_out += img_id_table[img_id]
 
-    #dataset['images'] = [x for x in images_table if]
     for img_id in imgs_ids_out:
         imgs_out.append(images_table[img_id])
 
@@ -73,14 +99,15 @@ def filter_classes(dataset):
     return dataset
 
 def copy_image_files(img_ids, foldername):
+    """
+    Copies images based on their image_ids into the specified folder.
+    """
+    
     # Load all traffic related image ids:
-   
-    anns = load_anns("/Users/David/Repositories/cocoTraffic/annotations/21_coco_sub_all_traffic/", 'instances_val2017Relabelled.json')   
+    anns = load_anns("/Users/David/Repositories/cocoTraffic/annotations/21_coco_sub_all_traffic/", 
+    'instances_val2017Relabelled.json')   
     
     # Filter for traffic lights:
-    
-    
-    
     path = '../images/'
     count = 0
 
@@ -94,11 +121,14 @@ def copy_image_files(img_ids, foldername):
             print('Folder {} does not exist. Please create it and try again.'.format(path+foldername))
             return
     assert(count == len(img_ids))
+
     print('Copied {} images to {}'.format(count, path+foldername))
 
-def make_set_1(anns_train1, anns_train2, anns_val):
-    # Isolate relabelled traffic annotations
-    # Output: train and val
+def make_base_dataset(anns_train1, anns_train2, anns_val):
+    """
+    Returns all labelled traffic light annotations from the three annotation files.
+    """
+
     keys = ['info', 'licenses', 'images', 'annotations', 'categories']
     anns = dict.fromkeys(keys)
     
@@ -106,7 +136,6 @@ def make_set_1(anns_train1, anns_train2, anns_val):
     anns['info'] = anns_train1['info']
     anns['licenses'] = anns_train1['licenses']
     anns['categories'] = anns_train1['categories']
-
 
     # Get images
     target_classes = [10,92,93,94]
@@ -124,7 +153,6 @@ def make_set_1(anns_train1, anns_train2, anns_val):
             seen.append(ann['id'])
             anns_count[int(ann['category_id'])] += 1
     print("Filtered {} annotations containing traffic lights.".format(len(anns_out)))
-    print(anns_count)
 
     images_out =[]
     images_in = anns_train1['images'] + anns_train2['images'] + anns_val['images']
@@ -143,7 +171,17 @@ def make_set_1(anns_train1, anns_train2, anns_val):
 
     return anns
 
-def make_set_2(dataset_in, dataset_relabelled):
+def make_coco_refined(dataset_in, dataset_relabelled):
+    """
+    Replaces traffic light annotations with the relabelled ones.
+
+    Inputs:
+    dataset_in         - COCO dataset object, e.g. train2017, val2017
+
+    Returns:
+    dataset_relabelled - COCO dataset object
+    """
+    
     # Only difference lays in some annotations.
     keys = ['info', 'licenses', 'images', 'annotations', 'categories']
     dataset = dict.fromkeys(keys)
@@ -169,9 +207,7 @@ def make_set_2(dataset_in, dataset_relabelled):
             count_total += 1
 
     dataset['annotations'] = anns_out
-    #dataset['annotations'] = dataset_in['annotations']
    
-    # Checks
     print("Found {} / {} relabelled annotations.".format(count, count_total+count))
     assert(len(anns_out) == len(dataset_in['annotations']))
     assert(count+count_total == len(dataset_in['annotations']))
@@ -180,7 +216,7 @@ def make_set_2(dataset_in, dataset_relabelled):
     
     return dataset
 
-def make_set_3(dataset_train, dataset_val, dataset_add):
+def make_coco_traffic(dataset_train, dataset_val, dataset_add):
     """
     Takes the new datast dataset_add, splits it into train/val 80/20
     and appends this to the other datasets.
@@ -189,12 +225,9 @@ def make_set_3(dataset_train, dataset_val, dataset_add):
     num_imgs_train_in = len(dataset_train['images'])
     num_imgs_val_in = len(dataset_val['images'])
 
-
     images_add = [x['id'] for x in dataset_add['images']]
     print("Found {} images which will be split into train and val.".format(len(images_add)))
 
-    # Make hash tables for train and val data
-    # Map image id to image object
     images_table = {x['id']:x for x in dataset_add["images"]}
 
     # Image_id to list of annotation object
@@ -203,7 +236,6 @@ def make_set_3(dataset_train, dataset_val, dataset_add):
         img_id = ann['image_id']
         anns_table[img_id].append(ann)
 
-    # Split images
     split = 0.8
     random.seed(1881)
     num_train = int(len(images_add) * split)
@@ -211,25 +243,18 @@ def make_set_3(dataset_train, dataset_val, dataset_add):
     imgs_train = random.sample(images_add, num_train)
     imgs_val = get_diff(images_add, imgs_train)
 
-
     assert(len(imgs_train) == num_train)
     assert(len(imgs_val) == num_val)
     assert(len(images_add) == (num_train + num_val))
-
-    
 
     images_train_out = [x for x in dataset_train['images']]
     images_val_out = [x for x in dataset_val['images']]
     anns_train_out = [x for x in dataset_train['annotations']]
     anns_val_out = [x for x in dataset_val['annotations']]
 
-    
-    
-    # Append image objects
     for img_id in imgs_train:    
         images_train_out.append(images_table[img_id])
         anns_train_out += anns_table[img_id]
-
 
     for img_id in imgs_val:
         images_val_out.append(images_table[img_id])
@@ -244,9 +269,11 @@ def make_set_3(dataset_train, dataset_val, dataset_add):
     assert(len(dataset_val["images"]) == (num_imgs_val_in + num_val))
 
     return dataset_train, dataset_val, imgs_train, imgs_val
-
-def make_set4(dataset_in, dataset_append):
     
+def make_coco_traffic_extended(dataset_in, dataset_append):
+    """
+    Appends the traffic light annotations from val2017 to dataset_in.
+    """
     keys = ['info', 'licenses', 'images', 'annotations', 'categories']
     dataset_out = dict.fromkeys(keys)
 
@@ -271,6 +298,7 @@ def make_new_images(dataset, imgs_train, imgs_val):
     table_anns = {x['image_id']:x for x in dataset['annotations']}
 
     keys = ['info', 'licenses', 'images', 'annotations', 'categories']
+    
     # Train
     dataset_train = dict.fromkeys(keys)
     dataset_train['info'] = dataset['info']
@@ -287,9 +315,7 @@ def make_new_images(dataset, imgs_train, imgs_val):
     dataset_val['images'] = [table_imgs[x] for x in imgs_val]
     dataset_val['annotations'] = [table_anns[x] for x in imgs_val]
     
-
     return dataset_train, dataset_val
-
 
 def print_stats(dataset):
     """
@@ -312,81 +338,54 @@ def print_stats(dataset):
             anns_per_class[cl] = 1
     print(anns_per_class)     
 
-def test():
-    path = "/Users/David/Repositories/cocoTraffic/annotations/"
-    filename = "instances_val2017.json"
-    dataset_in = load_anns(path, filename)
-    
-    keys = ['info', 'licenses', 'images', 'annotations', 'categories']
-    dataset = dict.fromkeys(keys)
-    
-    dataset['info'] = dataset_in['info']
-    dataset['licenses'] = dataset_in['licenses']
-    dataset['categories'] = dataset_in['categories']
-    dataset['images'] = dataset_in['images']
-    dataset['annotations'] = dataset_in['annotations']
-
-    save_dataset(dataset, "test_val2017.json")
-
 
 if __name__ == "__main__":
-    """
-    # 1. Dataset: COCO Traffic Lights
-    path = "/Users/David/Repositories/cocoTraffic/annotations/21_coco_sub_all_traffic/"
+    # 0. Dataset: COCO Traffic Lights
+    path = "../annotations/21_coco_sub_all_traffic/"
     file_train1 = "instances_trainTraffic.json"
     file_train2 = "instances_valTraffic.json"
     file_val = "instances_val2017Relabelled.json"
     anns_train1 = load_anns(path, file_train1)
     anns_train2 = load_anns(path, file_train2)
     anns_val = load_anns(path, file_val)
-
-    dataset1 = make_set_1(anns_train1, anns_train2, anns_val)
+    dataset1 = make_base_dataset(anns_train1, anns_train2, anns_val)
     #save_dataset(dataset1, "instances_traffic_lights.json")
 
-    # 2. Dataset: COCO Traffic Full
-    print("----------\nDataset 2")
-    path = "/Users/David/Repositories/cocoTraffic/annotations/"
+    # 1. Dataset: COCO Refined
+    print("----------\nDataset 1")
+    path = "../annotations/"
     anns_relabelled = dataset1
     file_train = "instances_train2017.json"
     file_val = "instances_val2017.json"
     anns_train = load_anns(path, file_train)
     anns_val = load_anns(path, file_val)
-    dataset2train = make_set_2(anns_train, anns_relabelled)
-    dataset2val = make_set_2(anns_val, anns_relabelled)
-
+    dataset2train = make_coco_refined(anns_train, anns_relabelled)
+    dataset2val = make_coco_refined(anns_val, anns_relabelled)
     #save_dataset(dataset2train, "instances_train2017traffic.json")
     #save_dataset(dataset2val, "instances_val2017traffic.json")
-    """
 
-    # 3. Dataset: COCO small
-    print("----------\nDataset 3")
-    path = "/Users/David/Repositories/cocoTraffic/annotations/21_coco_sub_all_traffic/"
+    # 2. Dataset: COCO Traffic
+    print("----------\nDataset 2")
+    path = "../annotations/21_coco_sub_all_traffic/"
     file_train = "instances_trainTraffic.json"
     file_val = "instances_valTraffic.json"
     anns_train = load_anns(path, file_train)
     anns_val = load_anns(path, file_val)
-    path_add = "/Users/David/Repositories/cocoTraffic/annotations/21_coco_sub_all_traffic/"
+    path_add = "../annotations/21_coco_sub_all_traffic/"
     file_val_add = "instances_val2017Relabelled.json"
     anns_add = load_anns(path_add, file_val_add)
     print(len(anns_add['annotations']))
-    
     anns_add = filter_classes(anns_add)
-
-
     print(len(anns_add['annotations']))
     print_stats(anns_train)
     print_stats(anns_val)
     print_stats(anns_add)
-
-    train_out, val_out, imgs_train, imgs_val = make_set_3(anns_train, anns_val, anns_add)
-
+    train_out, val_out, imgs_train, imgs_val = make_coco_traffic(anns_train, anns_val, anns_add)
     dataset_train, dataset_val = make_new_images(anns_add, imgs_train, imgs_val)
-    save_dataset(dataset_train, "instances_train_new_images.json")
-    save_dataset(dataset_val, "instances_val_new_images.json")
-    exit()
+    #save_dataset(dataset_train, "instances_train_new_images.json")
+    #save_dataset(dataset_val, "instances_val_new_images.json")
 
-
-    print("\n############## Modified dataset 3 ##############")
+    print("\n############## Modified dataset 2 ##############")
     print_stats(train_out)
     print_stats(val_out)
     #save_dataset(train_out, "instances_train_traffic_small.json")
@@ -394,16 +393,15 @@ if __name__ == "__main__":
     #copy_image_files(imgs_train, "trainTrafficPlus")
     #copy_image_files(imgs_val, "valTrafficPlus")
 
-  
-    # 4. Dataset: COCO plus
-    print("----------\nDataset 4")
-    path = "/Users/David/Repositories/cocoTraffic/annotations/30_lisa_sub/"
+    # 3. Dataset: COCO Traffic Extended
+    print("----------\nDataset 3")
+    path = "../annotations/30_lisa_sub/"
     file_train = "instances_trainTrafficLISA.json"
     file_val = "instances_valTrafficLISA.json"
     train_append = load_anns(path, file_train)
     val_append = load_anns(path, file_val)
-    dataset_train = make_set4(train_out, train_append)
-    dataset_val = make_set4(val_out, val_append)
+    dataset_train = make_coco_traffic_extended(train_out, train_append)
+    dataset_val = make_coco_traffic_extended(val_out, val_append)
     print_stats(dataset_train)
     print_stats(dataset_val)
     #save_dataset(dataset_train, "instances_train_traffic_plus.json")

@@ -15,9 +15,6 @@ from shutil import copyfile
 import os
 from collections import defaultdict
 
-#from pycocotools.coco import COCO
-
-
 class Dataset:
     def __init__(self, path, filename):
         
@@ -79,7 +76,6 @@ def box_coco_to_yolo(bbox_coco, img):
     Returns:
     bbox_yolo   -- List of bbox coordinates in yolo format.
     """
-
 
     bbox_yolo = []
     bbox_yolo.append((bbox_coco[0] + 0.5 * bbox_coco[2])/img['width'])

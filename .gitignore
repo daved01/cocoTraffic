@@ -137,6 +137,8 @@ annotations/
 dev/
 tools/dataLabeller/data/
 tools/dataLabeller/makesense/relabelled/
+tools/preLabeller/visualize_coco.ipynb
+tools/preLabeller/visualizeripynb
+
 *.csv
 *.log
-pre-labeller/
