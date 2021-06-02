@@ -1,5 +1,7 @@
 # ========================================================================= #
-# Generates labels in the yolov5 format.                                    #
+# Generates labels in the yolov5 format. File is tailored to the            #
+# COCO Traffic Plus dataset.                                                #
+#                                                                           #
 # Inputs: Annotation files in the COCO format                               #
 #                                                                           #
 # Allows for any image id datatype, not only integers.                      #
@@ -13,12 +15,12 @@ from shutil import copyfile
 import os
 from collections import defaultdict
 
-from pycocotools.coco import COCO
+#from pycocotools.coco import COCO
 
 
 class Dataset:
-    def __init__(self, filename):
-        path = "../annotations/"
+    def __init__(self, path, filename):
+        
         self.filename = filename
     
         # Load annotations
@@ -26,9 +28,6 @@ class Dataset:
         anns = json.load(f)
 
         # Generate index
-        # Two hash tables: 
-        # Image_id as key, and annotation ids as values {list}
-        # Annotation id as key and annotation objects as value
         self.img_ids_to_ann_ids = defaultdict(list)
         self.ann_id_to_anns = dict()
         self.img_ids_to_imgs = dict()
@@ -91,20 +90,16 @@ def box_coco_to_yolo(bbox_coco, img):
     return bbox_yolo
 
 
-def run(dataset_name):
+def run(path, dataset_name):
     # Set category_id mapping
     # To accomodate our 15 classes, the category_ids are remapped before writing them to the labels for yolo.
     # Traffic_light has been replaced by the three new categories traffic_light_red (92), traffic_light_green (93), and traffic_light_na (94)
     coco_to_yolo = {'1':'0', '2':'1', '3':'2', '4':'3', '6':'4', '7':'5', '8':'6', '11': '7', '13':'8', '17':'9', '18':'10', '92':'11', '93':'12', '94':'13'}
-    #classes_yolo = {'0':'person', '1':'bicycle', '2':'car', '3':'motorcycle', '4':'bus', '5':'train', '6':'truck', 
-    # '7':'fire hydrant', '8':'stop sign', '9':'cat', '10':'dog', '11':'traffic_light_red', 
-    # '12':'traffic_light_green', '13':'traffic_light_na'}
 
     # Initialize COCO api for instance annotations
     filename = "instances_" + dataset_name
-    data = Dataset(filename)
+    data = Dataset(path, filename)
     img_ids = data.get_image_ids()
-
 
     # One file with filename = image_id containg all annotations
     for img_id in img_ids:
@@ -140,6 +135,7 @@ def run(dataset_name):
                 boxW.append(bbox_yolo[3])
 
         assert(len(categoryId) == len(boxX) == len(boxY) == len(boxH) == len(boxW))
+        
         # Write file
         file_path = '../labels/' + dataset_name + '/'
         rows = zip(categoryId, boxX, boxY, boxH, boxW)
@@ -149,7 +145,7 @@ def run(dataset_name):
             for row in rows:
                 writer.writerow(row)  
 
-
 if __name__=="__main__":
-    dataset_name = 'trainTraffic'
-    run(dataset_name)
+    path = "../annotations/"
+    dataset_name = 'val_new_images'
+    run(path, dataset_name)

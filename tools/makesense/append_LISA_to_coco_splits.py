@@ -258,7 +258,7 @@ if __name__ == "__main__":
     #copy_images_from_lisa(imgs_name_list, "<path_to_the_lisa_dataset>")
     anns_lisa = anns_lisa[anns_lisa["name"].isin(imgs_name_list)]
     assert(len(set(anns_lisa['name'])) == len(imgs_name_list))
-
+    
     # Split data into train and val
     df_train, df_val = split_anns(anns_lisa, split=0.8, copy_files=False)
     anns_train = make_coco_ann(df_train, "instances_trainTrafficLISA", save=False)

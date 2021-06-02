@@ -134,7 +134,9 @@ annotations/
 .zip
 
 # Project specific
-makesense/delete/
+dev/
+tools/dataLabeller/data/
+tools/dataLabeller/makesense/relabelled/
 *.csv
 *.log
 pre-labeller/
