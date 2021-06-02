@@ -361,8 +361,8 @@ if __name__ == "__main__":
     anns_val = load_anns(path, file_val)
     dataset2train = make_coco_refined(anns_train, anns_relabelled)
     dataset2val = make_coco_refined(anns_val, anns_relabelled)
-    #save_dataset(dataset2train, "instances_train2017traffic.json")
-    #save_dataset(dataset2val, "instances_val2017traffic.json")
+    #save_dataset(dataset2train, "instances_train2017refined.json")
+    #save_dataset(dataset2val, "instances_val2017refined.json")
 
     # 2. Dataset: COCO Traffic
     print("----------\nDataset 2")
@@ -388,10 +388,10 @@ if __name__ == "__main__":
     print("\n############## Modified dataset 2 ##############")
     print_stats(train_out)
     print_stats(val_out)
-    #save_dataset(train_out, "instances_train_traffic_small.json")
-    #save_dataset(val_out, "instances_val_traffic_small.json")
-    #copy_image_files(imgs_train, "trainTrafficPlus")
-    #copy_image_files(imgs_val, "valTrafficPlus")
+    #save_dataset(train_out, "instances_train_traffic.json")
+    #save_dataset(val_out, "instances_val_traffic.json")
+    #copy_image_files(imgs_train, "trainTraffic")
+    #copy_image_files(imgs_val, "valTraffic")
 
     # 3. Dataset: COCO Traffic Extended
     print("----------\nDataset 3")
@@ -404,6 +404,6 @@ if __name__ == "__main__":
     dataset_val = make_coco_traffic_extended(val_out, val_append)
     print_stats(dataset_train)
     print_stats(dataset_val)
-    #save_dataset(dataset_train, "instances_train_traffic_plus.json")
-    #save_dataset(dataset_val, "instances_val_traffic_plus.json")
+    #save_dataset(dataset_train, "instances_train_traffic_extended.json")
+    #save_dataset(dataset_val, "instances_val_traffic_extended.json")
     
