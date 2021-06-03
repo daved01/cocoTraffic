@@ -1,9 +1,10 @@
 # COCO Dataset Extensions
 
-We refined the traffic light class (index 10) of the COCO dataset into the three classes traffic_ligt_red (92), traffic_light_green (93), traffic_light_na (94) and integrated these into three datasets, see below. We discovered mislabelled traffic lights in the original COCO 2017 training and validation data and kept their label as 10, so that these annotations can easily be identified.
+We refined the traffic light class (index 10) of the COCO dataset into the three classes, traffic_light_red (92), traffic_light_green (93), traffic_light_na (94), and integrated these into three datasets (see below). We discovered mislabelled traffic lights in the original COCO 2017 training and validation data and kept their label as 10, so that these annotations can easily be identified.
 
 To learn more about the dataset see our post [here]().
 
+If you want to gnerate annotations for [yolov5](https://github.com/ultralytics/yolov5) from COCO annotation files, use the file `make_yolo_labels.py`.
 
 ## Setup
 The setup varies for each of the three datasets since they require different files. For each follow the steps desribed below.
@@ -15,6 +16,7 @@ cocoTraffic/
 ├── annotations/
 ├── api/
 │   ├── make_datasets.py
+│   ├── make_yolo_labels.py
 │   ├── ...
 ├── images/
 │   ├── train2017/
@@ -49,7 +51,7 @@ Extended COCO Traffic with images of traffic lights from the [LISA Traffic Light
 
 
 # Tools
-To label the data we created and used the following tools.
+To label the data, we created and used the following tools.
 
 `dataLabeller` - Tool which iterates through COCO annotations and lets you change their category id. Used to relabel the traffic lights.
 
