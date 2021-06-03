@@ -6,9 +6,9 @@ To learn more about the dataset see our post [here]().
 
 
 ## Setup
-The setup varies for each of the three datasets since they require different files. For each you can either follow the steps desribed below or use the `setup.py`.
+The setup varies for each of the three datasets since they require different files. For each follow the steps desribed below.
 
-If you choose not to use the `setup.py`, create folders `annotations` and `images` at the root of this repository. Then, download the images `train2017` from the COCO [website]() and add them to the `images` folder. Then your repository should look like this:
+In all cases, create folders `annotations` and `images` at the root of this repository first. Then, download the images `train2017` and `val2017` from the COCO [website]() and add them to the `images` folder. Then your repository should look like this:
 
 ```
 cocoTraffic/
@@ -26,22 +26,16 @@ cocoTraffic/
 │   ├── ...
 ├── LICENSE
 ├── README.md
-├── setup.py
 ```
 
 With this base setup choose the dataset that you need and follow the instructions.
 
 
 ## 1. COCO Refined
--> Choice 1 in `setup.py`
-
-Full COCO 2017 dataset, with all traffic lights relabelled in training and validation dataset. 
-To start, download the images from the validation dataset `val2017` from the COCO [website](https://cocodataset.org/#download) and place them next to the `train2017` images. Then, get the annotation files with the refined labels [here](https://drive.google.com/file/d/1weZpzmva_fcTtiSIm9jdM73PdBoJgzOe/view?usp=sharing) and place them into the `annotations` folder. 
+Full COCO 2017 dataset, with all traffic lights relabelled in training and validation dataset. Get the annotation files with the refined labels [here](https://drive.google.com/file/d/1weZpzmva_fcTtiSIm9jdM73PdBoJgzOe/view?usp=sharing) and place them into the `annotations` folder. 
 
 
 ## 2. COCO Traffic
--> Choice 2 in `setup.py`
-
 Subset of the `train2017` images with classes which are related to traffic, and all traffic light images from `val2017`. These images have been split into a training and validation set (80/20). The chosen classes are:
 
 ['traffic light', 'car', 'truck','bus', 'motorcycle', 'bicycle', 'person', 'dog', 'cat', 'stop sign', 'fire hydrant', 'train', 'traffic_light_red', 'traffic_light_green', 'traffic_light_na']
@@ -50,8 +44,6 @@ Ideal to train a smaller model to detect vehicles, pedestrians etc. Annotation f
 
 
 ## 3. COCO Traffic Extended
--> Choice 3 in `setup.py`
-
 Extended COCO Traffic with images of traffic lights from the [LISA Traffic Light](https://www.kaggle.com/mbornoe/lisa-traffic-light-dataset) dataset. We labelled these images to include all classes from `COCO Traffic`. Annotation [file](https://drive.google.com/file/d/1ibviz00vjHelwkkoJfQEhTmtrrw9p7Wx/view?usp=sharing)
 
 
