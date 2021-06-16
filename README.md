@@ -4,10 +4,10 @@ We refined the traffic light class (index 10) of the COCO dataset into the three
 
 To learn more about the dataset see our post [here]().
 
-If you want to gnerate annotations for [yolov5](https://github.com/ultralytics/yolov5) from COCO annotation files, use the file `make_yolo_labels.py`.
+If you want to generate annotations for [yolov5](https://github.com/ultralytics/yolov5) from COCO annotation files, use the file `make_yolo_labels.py`.
 
 ## Setup
-The setup varies for each of the three datasets since they require different files. For each follow the steps desribed below.
+The setup varies for each of the three datasets since they require different files. For each follow the steps described below.
 
 In all cases, create folders `annotations` and `images` at the root of this repository first. Then, download the images `train2017` and `val2017` from the COCO [website]() and add them to the `images` folder. Then your repository should look like this:
 
