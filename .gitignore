@@ -135,6 +135,7 @@ annotations/
 
 # Project specific
 dev/
+plots/
 tools/dataLabeller/data/
 tools/dataLabeller/makesense/relabelled/
 tools/preLabeller/visualize_coco.ipynb
