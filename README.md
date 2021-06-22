@@ -6,7 +6,7 @@
 ## Overview
 We refined the traffic light class (index 10) of the COCO dataset into the three classes, traffic_light_red (92), traffic_light_green (93), traffic_light_na (94), and integrated these into three datasets. We discovered mislabelled traffic lights in the original COCO 2017 training and validation data and kept their label as 10, so that these annotations can easily be identified.
 
-![Example](example.png "COCO Traffic dataset example")
+![Example](example.jpg "COCO Traffic dataset example")
 *Figure: Distribution of the traffic light annotations. Contains all traffic light annotations from train2017 and val2017.*
 
 For details on the datasets also see our [post](https://www.neuralception.com/cocodatasetextension/).
