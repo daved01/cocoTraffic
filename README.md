@@ -1,6 +1,6 @@
 # COCO Traffic Dataset
 
-![Example](example.jpg "COCO Traffic dataset example")
+![Example](coco_traffic.jpg "COCO Traffic dataset example")
 
 
 ## Overview
