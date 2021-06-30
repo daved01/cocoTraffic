@@ -1,5 +1,7 @@
 # COCO Traffic Dataset
+_David Kirchhoff and Philip Hoang_
 
+[['neuralception.com'](https://neuralception.com)]
 ![Example](coco_traffic.jpg "COCO Traffic dataset example")
 
 
