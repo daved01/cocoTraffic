@@ -1,11 +1,9 @@
 # COCO Traffic Dataset
 ![GitHub](https://img.shields.io/github/license/daved01/cocoTraffic)
 
-_David Kirchhoff and Philip Hoang_
-
-[[`Neuralception.com`](https://neuralception.com)]
-
 ![Example](coco_traffic.jpg "COCO Traffic dataset example")
+
+_David Kirchhoff and Philip Hoang_
 
 
 ## Overview
